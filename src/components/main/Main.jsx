@@ -1,4 +1,4 @@
-import { Play } from "lucide-react"
+import { Play, ArrowRight } from "lucide-react"
 import Carousel from "../ui/Carousel"
 import "./Main.css"
 
@@ -47,35 +47,78 @@ const Main = () => {
   ]
 
   return (
-    <section className="mainContainer">
-      <div className="leftMainContent">
-        <h1 className="mainHeadline">
-          <span>Active</span>
-          <span>Comfort</span>
-          <span>Wear.</span>
-        </h1>
-        <div className="mainControls">
-          <button className="btn primary-btn">Explore Now</button>
-          <button className="btn secondary-btn">
-            <Play size={18} /> Watch Reels
-          </button>
+    <div className="landing-page">
+      <div className="svg-background"></div>
+      <div className="svg-background-2"></div>
+
+      <section className="mainContainer">
+        <div className="leftMainContent">
+          {/* <div className="badge">New Season Collection</div> */}
+          <h1 className="mainHeadline">
+            <span>Active</span>
+            <span>Comfort</span>
+            <span>Wear.</span>
+          </h1>
+          <p className="mainDescription">
+            Discover our curated collection of premium quality clothing designed for both style and comfort. Each piece
+            is crafted with attention to detail and sustainable materials.
+          </p>
+          <div className="mainControls">
+            <button className="btn primary-btn">
+              Explore Now <ArrowRight size={16} />
+            </button>
+            <button className="btn secondary-btn">
+              <Play size={18} /> Watch Reels
+            </button>
+          </div>
+          <div className="stats">
+            <div className="stat-item">
+              <span className="stat-number">2</span>
+              <span className="stat-label">Collections</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">300+</span>
+              <span className="stat-label">Products</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">10k+</span>
+              <span className="stat-label">Happy Customers</span>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="rightMainContent">
-        <div className="image-container">
-          <Carousel images={carouselImages} />
+        <div className="rightMainContent">
+          <div className="image-container">
+            <Carousel images={carouselImages} />
+            <div className="carousel-label">
+              <div className="dot"></div>
+              <span>Featured Collections</span>
+            </div>
+          </div>
         </div>
-        <div className="extraContent">
-          <h5>View Our Latest Collection</h5>
-          <p>Crafted for those who value quality and elegance</p>
-          {/* <div className="collection-indicators">
-            <span className="active-indicator"></span>
-            <span></span>
-            <span></span>
-          </div> */}
+      </section>
+
+      <section className="categories">
+        <h2 className="section-title">Our Categories</h2>
+        <div className="category-grid">
+          <div className="category-card">
+            <div className="category-icon">👔</div>
+            <h3>Formal Wear</h3>
+          </div>
+          <div className="category-card">
+            <div className="category-icon">👕</div>
+            <h3>Casual</h3>
+          </div>
+          <div className="category-card">
+            <div className="category-icon">🏃‍♂️</div>
+            <h3>Active</h3>
+          </div>
+          <div className="category-card">
+            <div className="category-icon">🧥</div>
+            <h3>Outerwear</h3>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
   )
 }
 

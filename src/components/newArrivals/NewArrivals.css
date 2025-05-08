@@ -46,5 +46,8 @@
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 1.5rem;
     }
+    .section-description{
+      margin-bottom: 1rem;
+    }
   }
   

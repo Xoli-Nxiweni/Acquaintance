@@ -9,7 +9,7 @@ import NewArrivals from "./components/newArrivals/NewArrivals"
 import Sale from "./components/sale/Sale"
 import Footer from "./components/footer/Footer"
 import Favorites from "./components/favorites/Favorites"
-import { ThemeProvider } from "./components/theme-provider"
+// import { ThemeProvider } from "./components/theme-provider"
 import "./App.css"
 import "./globalStyles.css"
 
@@ -50,7 +50,7 @@ export default function App() {
   
 
   return (
-    <ThemeProvider>
+    // <ThemeProvider>
       <div id="top" className="app">
         <Navbar onFavoritesClick={toggleFavoritesView} favoritesCount={favorites.length} />
 
@@ -84,6 +84,5 @@ export default function App() {
 
         <Footer />
       </div>
-    </ThemeProvider>
   )
 }

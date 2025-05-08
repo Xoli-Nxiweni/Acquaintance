@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Menu, X, Search, Heart, Sun, Moon, ChevronDown } from "lucide-react"
-// import { useTheme } from "../theme-provider"
+import { Menu, X, Search, Heart, ChevronDown } from 'lucide-react'
 import "./Navbar.css"
 import image from "../../assets/Logo2.jpeg"
 import Categories from "../categories/Categories"
@@ -10,7 +9,7 @@ import Categories from "../categories/Categories"
 const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
-  const [activeCategory, setActiveCategory] = useState(false)
+  const [activeCategory, setActiveCategory] = useState(null)
   const [scrolled, setScrolled] = useState(false)
   const [activePage, setActivePage] = useState("/")
   const searchInputRef = useRef(null)
@@ -20,7 +19,6 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [selectedSubcategory, setSelectedSubcategory] = useState(null)
   const [showCategoriesComponent, setShowCategoriesComponent] = useState(false)
-//   const { theme, toggleTheme } = useTheme()
 
   // Categories data structure
   const categories = [
@@ -221,7 +219,7 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
               }}
             >
               Categories
-              <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}><ChevronDown/></span>
+              <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}><ChevronDown size={16}/></span>
             </a>
 
             <div className={`dropdownContent ${activeCategory === 0 ? "visible" : ""}`}>
@@ -328,7 +326,6 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
           categoriesData={categories}
           onCategorySelect={handleCategorySelect}
           onSubcategorySelect={handleSubcategorySelect}
-          onClose={() => setShowCategoriesComponent(false)}
         />
       )}
     </>
