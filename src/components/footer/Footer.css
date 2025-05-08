@@ -1,0 +1,138 @@
+.footer {
+    background-color: var(--card);padding: 10px 10%;
+    margin-top: 80px;
+    border-top: 1px solid var(--border);
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 50px;
+  }
+  
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .footer-logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+  
+  .footer-logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .footer-description {
+    color: var(--gray-500);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  
+  .footer-social {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--gray-100);
+    color: var(--foreground);
+    border-radius: 50%;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  
+  .social-icon:hover {
+    background-color: var(--foreground);
+    color: var(--background);
+    transform: translateY(-3px);
+  }
+  
+  .footer-column h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .footer-link {
+    color: var(--gray-500);
+    transition: color 0.2s ease;
+  }
+  
+  .footer-link:hover {
+    color: var(--foreground);
+  }
+  
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+  
+  .footer-copyright {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+  }
+  
+  .footer-legal {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .legal-link {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+  }
+  
+  .legal-link:hover {
+    color: var(--foreground);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .footer-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .footer {
+      padding: 40px 5% 20px;
+    }
+  
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  
+    .footer-bottom {
+      flex-direction: column;
+      gap: 20px;
+      text-align: center;
+    }
+  }
+  
