@@ -17,7 +17,7 @@
   background: var(--background);
   justify-content: space-between;
   align-items: center;
-  padding: 10px 10%;
+  padding: 0.75rem 10%;
   box-shadow: 0 2px 10px var(--shadow);
   position: sticky;
   top: 0;
@@ -27,7 +27,6 @@
 
 /* Scrolled state */
 .myNavbar.scrolled {
-  /* padding: 0.75rem 4rem; */
   box-shadow: 0 4px 20px var(--shadow);
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.95);
@@ -124,11 +123,11 @@
 
 .dropdownContent.visible {
   opacity: 1;
+  display: grid;
   transform: translateY(0);
 }
 
-.categoryDropdown:hover .dropdownContent {
-  display: grid;
+.categoryDropdown:active-view-transition .dropdownContent {
 }
 
 .category-group {
@@ -254,6 +253,13 @@
   position: relative;
 }
 
+.search-container form {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .search-icon {
   position: absolute;
   left: 1rem;
@@ -280,13 +286,35 @@
   color: var(--gray-500);
 }
 
+.search-btn {
+  position: absolute;
+  right: 3rem;
+  background: var(--primary);
+  border: none;
+  cursor: pointer;
+  color: var(--secondary);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
 .search-close {
   position: absolute;
-  right: 1rem;
+  right: 0;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--foreground);
+  padding: 0.5rem;
 }
 
 /* Mobile responsiveness */
@@ -363,13 +391,13 @@
     margin-top: 0.75rem;
   }
 
-  .categoryDropdown:hover .dropdownContent {
+  /* .categoryDropdown:hover .dropdownContent {
     display: none;
   }
 
   .dropdownContent.visible {
     display: grid;
-  }
+  } */
 
   .category-group {
     border-bottom: 1px solid var(--gray-100);
@@ -381,6 +409,14 @@
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0;
+  }
+
+  .search-container {
+    width: 90%;
+  }
+
+  .search-btn {
+    right: 2.5rem;
   }
 }
 
@@ -395,5 +431,20 @@
 
   .navLinks {
     padding: 1.5rem;
+  }
+
+  .search-container {
+    width: 95%;
+  }
+
+  .search-input {
+    font-size: 1rem;
+    padding: 0.75rem 3rem;
+  }
+
+  .search-btn {
+    width: 2rem;
+    height: 2rem;
+    right: 2rem;
   }
 }

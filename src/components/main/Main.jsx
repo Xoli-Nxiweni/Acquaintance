@@ -39,11 +39,11 @@ const Main = () => {
       alt: "Trendy outfit collection",
       collection: "Trendy Styles",
     },
-    {
-      src: "https://images.unsplash.com/photo-1521747116042-5a810fda9664?...",
-      alt: "Fashionable clothing line",
-      collection: "Chic Collection",
-    },
+    // {
+    //   src: "https://images.unsplash.com/photo-1521747116042-5a810fda9664?...",
+    //   alt: "Fashionable clothing line",
+    //   collection: "Chic Collection",
+    // },
   ]
 
   return (
@@ -59,13 +59,17 @@ const Main = () => {
             <span>Comfort</span>
             <span>Wear.</span>
           </h1>
+          <h1 className="mainHeadline">
+            <span>Active Comfort Wear.</span>
+           
+          </h1>
           <p className="mainDescription">
             Discover our curated collection of premium quality clothing designed for both style and comfort. Each piece
             is crafted with attention to detail and sustainable materials.
           </p>
           <div className="mainControls">
             <button className="btn primary-btn">
-              Explore Now <ArrowRight size={16} />
+              <a href="/products" style={{ display: "flex", alignItems: "center", gap: "5px", textDecoration: "none", color: "white" }}>Explore Now <ArrowRight size={16} /></a>
             </button>
             <button className="btn secondary-btn">
               <Play size={18} /> Watch Reels
@@ -97,7 +101,7 @@ const Main = () => {
         </div>
       </section>
 
-      <section className="categories">
+      {/* <section className="categories">
         <h2 className="section-title">Our Categories</h2>
         <div className="category-grid">
           <div className="category-card">
@@ -117,7 +121,7 @@ const Main = () => {
             <h3>Outerwear</h3>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   )
 }

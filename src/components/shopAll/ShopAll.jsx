@@ -28,6 +28,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 42,
             isNew: false,
             category: "t-shirts",
+            discount: 1,
             likes: 24,
           },
           {
@@ -41,6 +42,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 18,
             isNew: false,
             category: "bottoms",
+            discount: 1,
             likes: 16,
           },
           {
@@ -54,6 +56,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 31,
             isNew: true,
             category: "outerwear",
+            discount: 1,
             likes: 38,
           },
           {
@@ -81,6 +84,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 14,
             isNew: false,
             category: "footwear",
+            discount: 1,
             likes: 9,
           },
           {
@@ -94,6 +98,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 23,
             isNew: true,
             category: "dresses",
+            discount: 1,
             likes: 31,
           },
           {
@@ -107,6 +112,7 @@ const ShopAll = ({ onToggleFavorite, favorites = [] }) => {
             reviewCount: 47,
             isNew: false,
             category: "activewear",
+            discount: 4,
             likes: 56,
           },
           {

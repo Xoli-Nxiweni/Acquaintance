@@ -34,8 +34,8 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
     <div className="product-card">
       <div className="product-image">
         <img src={product.image || "/placeholder.svg?height=300&width=300"} alt={product.name} />
-        {product.isNew && <span className="product-tag new-tag">NEW</span>}
-        {product.discount && <span className="product-tag sale-tag">-{product.discount}%</span>}
+        {/* {product.isNew && <span className="product-tag new-tag">NEW</span>} */}
+        {/* {product.discount && <span className="product-tag sale-tag">-{product.discount}%</span>} */}
         <div className="product-actions">
           <button className={`action-button ${isLiked ? "active" : ""}`} onClick={handleLike} aria-label="Like product">
             <ThumbsUp size={18} />
@@ -60,11 +60,11 @@ const ProductCard = ({ product, onToggleFavorite, isFavorite }) => {
           <div className="product-price">
             {product.discount ? (
               <>
-                <span className="sale-price">${(product.price * (1 - product.discount / 100)).toFixed(2)}</span>
-                <span className="regular-price">${product.price.toFixed(2)}</span>
+                <span className="sale-price">R{(product.price * (1 - product.discount / 100)).toFixed(2)}</span>
+                <span className="regular-price">R{product.price.toFixed(2)}</span>
               </>
             ) : (
-              <span className="regular-price">${product.price.toFixed(2)}</span>
+              <span className="regular-price">R{product.price.toFixed(2)}</span>
             )}
           </div>
           <div className="product-rating">

@@ -1,15 +1,23 @@
 "use client"
 
-import { Instagram, Twitter, Facebook, Youtube } from "lucide-react"
+import { useState } from "react"
+import { Instagram, Twitter, Facebook, Youtube } from 'lucide-react'
 import "./Footer.css"
 import logo from "../../assets/Logo2.jpeg"
 
-const Footer = () => {
+const Footer = ({ onRenderContact }) => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     })
+  }
+
+  const handleContactClick = (e) => {
+    e.preventDefault()
+    if (onRenderContact) {
+      onRenderContact()
+    }
   }
 
   return (
@@ -24,16 +32,16 @@ const Footer = () => {
             Discover curated collections of comfortable, stylish clothing designed to fit your lifestyle.
           </p>
           <div className="footer-social">
-            <a href="#" className="social-icon" aria-label="Instagram">
+            <a href="https://www.instagram.com" className="social-icon" aria-label="Instagram">
               <Instagram size={20} />
             </a>
-            <a href="#" className="social-icon" aria-label="Twitter">
+            <a href="https://www.twitter.com" className="social-icon" aria-label="Twitter">
               <Twitter size={20} />
             </a>
-            <a href="#" className="social-icon" aria-label="Facebook">
+            <a href="https://www.facebook.com" className="social-icon" aria-label="Facebook">
               <Facebook size={20} />
             </a>
-            <a href="#" className="social-icon" aria-label="YouTube">
+            <a href="https://www.youtube.com" className="social-icon" aria-label="YouTube">
               <Youtube size={20} />
             </a>
           </div>
@@ -78,7 +86,7 @@ const Footer = () => {
         <div className="footer-column">
           <h3>Help</h3>
           <div className="footer-links">
-            <a href="#" className="footer-link">
+            <a href="#" className="footer-link contact-link" onClick={handleContactClick}>
               Contact Us
             </a>
             <a href="#" className="footer-link">

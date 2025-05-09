@@ -114,7 +114,7 @@
   
   @media (max-width: 768px) {
     .about-container {
-      padding: 50px 5%;
+      padding: 25% 10% 0% 10%; 
     }
   
     .values-grid {

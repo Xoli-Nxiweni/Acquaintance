@@ -1,17 +1,18 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { Menu, X, Search, Heart, ChevronDown } from 'lucide-react'
+import { Menu, X, SearchIcon, Heart, ChevronDown } from "lucide-react"
 import "./Navbar.css"
 import image from "../../assets/Logo2.jpeg"
 import Categories from "../categories/Categories"
 
-const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
+const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState(null)
   const [scrolled, setScrolled] = useState(false)
   const [activePage, setActivePage] = useState("/")
+  const [searchTerm, setSearchTerm] = useState("")
   const searchInputRef = useRef(null)
   const navbarRef = useRef(null)
 
@@ -153,6 +154,9 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
   // Toggle search bar
   const toggleSearch = () => {
     setSearchOpen(!searchOpen)
+    if (!searchOpen) {
+      setSearchTerm("")
+    }
   }
 
   // Handle category selection from Categories component
@@ -173,6 +177,24 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
     setSelectedSubcategory(subcategorySlug)
   }
 
+  // Handle search submission
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+
+    if (searchTerm.trim()) {
+      // Close the search overlay
+      setSearchOpen(false)
+
+      // Call the onSearch prop with the search term
+      if (onSearch) {
+        onSearch(searchTerm.trim())
+      }
+
+      // Update active page for styling
+      setActivePage(`/search/${searchTerm.trim()}`)
+    }
+  }
+
   return (
     <>
       <nav ref={navbarRef} className={`myNavbar ${scrolled ? "scrolled" : ""}`}>
@@ -188,11 +210,11 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
         {/* Navigation links - desktop & mobile */}
         <div className={`navLinks ${isMenuOpen ? "active" : ""}`}>
           <a
-            href="/"
-            className={activePage === "/" ? "active" : ""}
+            href="/home #"
+            className={activePage === "/home" ? "active" : ""}
             onClick={(e) => {
               e.preventDefault()
-              navigateToSection("/")
+              navigateToSection("/home")
             }}
           >
             Home
@@ -219,7 +241,9 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
               }}
             >
               Categories
-              <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}><ChevronDown size={16}/></span>
+              <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}>
+                <ChevronDown size={16} />
+              </span>
             </a>
 
             <div className={`dropdownContent ${activeCategory === 0 ? "visible" : ""}`}>
@@ -295,18 +319,30 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
         {/* Search overlay */}
         <div className={`search-overlay ${searchOpen ? "active" : ""}`}>
           <div className="search-container">
-            <Search size={20} className="search-icon" />
-            <input ref={searchInputRef} type="text" placeholder="Search for products..." className="search-input" />
-            <button className="search-close" onClick={toggleSearch}>
-              <X size={20} />
-            </button>
+            <form onSubmit={handleSearchSubmit}>
+              <SearchIcon size={20} className="search-icon" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search for products..."
+                className="search-input"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button type="submit" className="search-btn">
+                <SearchIcon size={20} />
+              </button>
+              <button type="button" className="search-close" onClick={toggleSearch}>
+                <X size={20} />
+              </button>
+            </form>
           </div>
         </div>
 
         {/* Action buttons */}
         <div className="navActions">
           <button className="navAction" onClick={toggleSearch} aria-label="Search">
-            <Search size={20} />
+            <SearchIcon size={20} />
           </button>
           <button className="navAction favorites-btn" onClick={onFavoritesClick} aria-label="Favorites">
             <Heart size={20} />
@@ -326,6 +362,9 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0 }) => {
           categoriesData={categories}
           onCategorySelect={handleCategorySelect}
           onSubcategorySelect={handleSubcategorySelect}
+          onClose={() => {
+            setShowCategoriesComponent(false)
+          }}
         />
       )}
     </>
