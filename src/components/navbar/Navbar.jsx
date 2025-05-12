@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { Menu, X, SearchIcon, Heart, ChevronDown } from "lucide-react"
 import "./Navbar.css"
 import image from "../../assets/Logo2.jpeg"
-import Categories from "../categories/Categories"
 
-const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
+const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch, onCategorySelect, categoriesData = [] }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [activeCategory, setActiveCategory] = useState(null)
@@ -15,43 +14,6 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const searchInputRef = useRef(null)
   const navbarRef = useRef(null)
-
-  // States for Categories component
-  const [selectedCategory, setSelectedCategory] = useState(null)
-  const [selectedSubcategory, setSelectedSubcategory] = useState(null)
-  const [showCategoriesComponent, setShowCategoriesComponent] = useState(false)
-
-  // Categories data structure
-  const categories = [
-    {
-      name: "T-Shirts",
-      subcategories: ["Graphic Tees", "Basic Tees", "Long Sleeve", "Polo Shirts"],
-    },
-    {
-      name: "Bottoms",
-      subcategories: ["Jeans", "Shorts", "Pants", "Skirts"],
-    },
-    {
-      name: "Outerwear",
-      subcategories: ["Jackets", "Coats", "Hoodies", "Sweaters"],
-    },
-    {
-      name: "Dresses",
-      subcategories: ["Casual", "Formal", "Maxi", "Mini"],
-    },
-    {
-      name: "Activewear",
-      subcategories: ["Tops", "Bottoms", "Sets", "Jackets"],
-    },
-    {
-      name: "Accessories",
-      subcategories: ["Bags", "Jewelry", "Hats", "Scarves"],
-    },
-    {
-      name: "Footwear",
-      subcategories: ["Sneakers", "Boots", "Sandals", "Formal"],
-    },
-  ]
 
   // Handle scroll effect
   useEffect(() => {
@@ -68,16 +30,6 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
     // Set initial active page based on URL
     const path = window.location.pathname
     setActivePage(path)
-
-    // Check if URL contains category or subcategory info
-    const pathParts = path.split("/")
-    if (pathParts[1] === "category" && pathParts[2]) {
-      setSelectedCategory(pathParts[2])
-      if (pathParts[3]) {
-        setSelectedSubcategory(pathParts[3])
-      }
-      setShowCategoriesComponent(true)
-    }
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
@@ -106,33 +58,13 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
     }
   }, [])
 
-  // Navigate to section function with Categories support
+  // Navigate to section function
   const navigateToSection = (path) => {
     // Close mobile menu when navigating
     setIsMenuOpen(false)
 
     // For client-side navigation without full page reload
     setActivePage(path)
-
-    // Check if it's a category path
-    if (path.startsWith("/category/")) {
-      const pathParts = path.split("/")
-      if (pathParts[2]) {
-        setSelectedCategory(pathParts[2])
-        if (pathParts[3]) {
-          setSelectedSubcategory(pathParts[3])
-        } else {
-          setSelectedSubcategory(null)
-        }
-        setShowCategoriesComponent(true)
-      }
-      return
-    }
-
-    // Reset Categories component if navigating elsewhere
-    setShowCategoriesComponent(false)
-    setSelectedCategory(null)
-    setSelectedSubcategory(null)
 
     // Smooth scroll to section if on same page
     const sectionId = path.replace(/^\//g, "")
@@ -159,24 +91,6 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
     }
   }
 
-  // Handle category selection from Categories component
-  const handleCategorySelect = (categorySlug) => {
-    if (categorySlug === null) {
-      setSelectedCategory(null)
-      setSelectedSubcategory(null)
-      // Optionally navigate to all categories page
-      // navigateToSection('/categories')
-    } else {
-      setSelectedCategory(categorySlug)
-      setSelectedSubcategory(null)
-    }
-  }
-
-  // Handle subcategory selection from Categories component
-  const handleSubcategorySelect = (subcategorySlug) => {
-    setSelectedSubcategory(subcategorySlug)
-  }
-
   // Handle search submission
   const handleSearchSubmit = (e) => {
     e.preventDefault()
@@ -195,179 +109,183 @@ const Navbar = ({ onFavoritesClick, favoritesCount = 0, onSearch }) => {
     }
   }
 
+  // Handle category click
+  const handleCategoryClick = (e, categoryName) => {
+    e.preventDefault()
+    if (onCategorySelect) {
+      const categorySlug = categoryName.toLowerCase().replace(/\s+/g, "-")
+      onCategorySelect(categorySlug)
+      setActivePage(`/category/${categorySlug}`)
+      setIsMenuOpen(false)
+      // Close the dropdown after selection
+      setActiveCategory(null)
+    }
+  }
+
+  // Handle subcategory click
+  const handleSubcategoryClick = (e, categoryName, subcategoryName) => {
+    e.preventDefault()
+    if (onCategorySelect) {
+      const categorySlug = categoryName.toLowerCase().replace(/\s+/g, "-")
+      const subcategorySlug = subcategoryName.toLowerCase().replace(/\s+/g, "-")
+      onCategorySelect(categorySlug, subcategorySlug)
+      setActivePage(`/category/${categorySlug}/${subcategorySlug}`)
+      setIsMenuOpen(false)
+      // Close the dropdown after selection
+      setActiveCategory(null)
+    }
+  }
+
   return (
-    <>
-      <nav ref={navbarRef} className={`myNavbar ${scrolled ? "scrolled" : ""}`}>
-        {/* Logo area */}
-        <div className="logo" onClick={() => navigateToSection("/")}>
-          <img
-            src={image || "/placeholder.svg"}
-            alt="Logo"
-            style={{ width: "50px", height: "50px", objectFit: "cover" }}
-          />
-        </div>
-
-        {/* Navigation links - desktop & mobile */}
-        <div className={`navLinks ${isMenuOpen ? "active" : ""}`}>
-          <a
-            href="/home #"
-            className={activePage === "/home" ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault()
-              navigateToSection("/home")
-            }}
-          >
-            Home
-          </a>
-
-          <a
-            href="/products"
-            className={activePage === "/products" ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault()
-              navigateToSection("/products")
-            }}
-          >
-            Shop All
-          </a>
-
-          <div className="categoryDropdown">
-            <a
-              href="/categories"
-              className={`categoryLink ${activePage.startsWith("/category") ? "active" : ""}`}
-              onClick={(e) => {
-                e.preventDefault()
-                toggleCategory(0)
-              }}
-            >
-              Categories
-              <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}>
-                <ChevronDown size={16} />
-              </span>
-            </a>
-
-            <div className={`dropdownContent ${activeCategory === 0 ? "visible" : ""}`}>
-              {categories.map((category, index) => (
-                <div key={index} className="category-group">
-                  <a
-                    href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
-                    className="category-main"
-                    onClick={(e) => {
-                      e.preventDefault()
-                      navigateToSection(`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`)
-                    }}
-                  >
-                    {category.name}
-                  </a>
-
-                  <div className="subcategories">
-                    {category.subcategories.map((subcategory, subIndex) => (
-                      <a
-                        key={subIndex}
-                        href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}/${subcategory.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="subcategory"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          navigateToSection(
-                            `/category/${category.name.toLowerCase().replace(/\s+/g, "-")}/${subcategory.toLowerCase().replace(/\s+/g, "-")}`,
-                          )
-                        }}
-                      >
-                        {subcategory}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <a
-            href="/new-arrivals"
-            className={activePage === "/new-arrivals" ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault()
-              navigateToSection("/new-arrivals")
-            }}
-          >
-            New Arrivals
-          </a>
-
-          <a
-            href="/sale"
-            className={activePage === "/sale" ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault()
-              navigateToSection("/sale")
-            }}
-          >
-            Sale
-          </a>
-
-          <a
-            href="/about"
-            className={activePage === "/about" ? "active" : ""}
-            onClick={(e) => {
-              e.preventDefault()
-              navigateToSection("/about")
-            }}
-          >
-            About Us
-          </a>
-        </div>
-
-        {/* Search overlay */}
-        <div className={`search-overlay ${searchOpen ? "active" : ""}`}>
-          <div className="search-container">
-            <form onSubmit={handleSearchSubmit}>
-              <SearchIcon size={20} className="search-icon" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder="Search for products..."
-                className="search-input"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button type="submit" className="search-btn">
-                <SearchIcon size={20} />
-              </button>
-              <button type="button" className="search-close" onClick={toggleSearch}>
-                <X size={20} />
-              </button>
-            </form>
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="navActions">
-          <button className="navAction" onClick={toggleSearch} aria-label="Search">
-            <SearchIcon size={20} />
-          </button>
-          <button className="navAction favorites-btn" onClick={onFavoritesClick} aria-label="Favorites">
-            <Heart size={20} />
-            {favoritesCount > 0 && <span className="favorites-count">{favoritesCount}</span>}
-          </button>
-          <button className="menuToggle" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Render Categories component when needed */}
-      {showCategoriesComponent && (
-        <Categories
-          selectedCategory={selectedCategory}
-          selectedSubcategory={selectedSubcategory}
-          categoriesData={categories}
-          onCategorySelect={handleCategorySelect}
-          onSubcategorySelect={handleSubcategorySelect}
-          onClose={() => {
-            setShowCategoriesComponent(false)
-          }}
+    <nav ref={navbarRef} className={`myNavbar ${scrolled ? "scrolled" : ""}`}>
+      {/* Logo area */}
+      <div className="logo" onClick={() => navigateToSection("/")}>
+        <img
+          src={image || "/placeholder.svg"}
+          alt="Logo"
+          style={{ width: "50px", height: "50px", objectFit: "cover" }}
         />
-      )}
-    </>
+      </div>
+
+      {/* Navigation links - desktop & mobile */}
+      <div className={`navLinks ${isMenuOpen ? "active" : ""}`}>
+        <a
+          href="/"
+          className={activePage === "/" ? "active" : ""}
+          onClick={(e) => {
+            e.preventDefault()
+            navigateToSection("/")
+          }}
+        >
+          Home
+        </a>
+
+        <a
+          href="/products"
+          className={activePage === "/products" ? "active" : ""}
+          onClick={(e) => {
+            e.preventDefault()
+            navigateToSection("/products")
+          }}
+        >
+          Shop All
+        </a>
+
+        <div className="categoryDropdown">
+          <a
+            href="/categories"
+            className={`categoryLink ${activePage.startsWith("/category") ? "active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault()
+              toggleCategory(0)
+              // Removed the handleCategoryClick call so it doesn't navigate immediately
+            }}
+          >
+            Categories
+            <span className={`dropdownArrow ${activeCategory === 0 ? "rotated" : ""}`}>
+              <ChevronDown size={16} />
+            </span>
+          </a>
+
+          <div className={`dropdownContent ${activeCategory === 0 ? "visible" : ""}`}>
+            {categoriesData.map((category, index) => (
+              <div key={index} className="category-group">
+                <a
+                  href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
+                  className="category-main"
+                  onClick={(e) => handleCategoryClick(e, category.name)}
+                >
+                  {category.name}
+                </a>
+
+                <div className="subcategories">
+                  {category.subcategories.map((subcategory, subIndex) => (
+                    <a
+                      key={subIndex}
+                      href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}/${subcategory.toLowerCase().replace(/\s+/g, "-")}`}
+                      className="subcategory"
+                      onClick={(e) => handleSubcategoryClick(e, category.name, subcategory)}
+                    >
+                      {subcategory}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <a
+          href="/new-arrivals"
+          className={activePage === "/new-arrivals" ? "active" : ""}
+          onClick={(e) => {
+            e.preventDefault()
+            navigateToSection("/new-arrivals")
+          }}
+        >
+          New Arrivals
+        </a>
+
+        <a
+          href="/sale"
+          className={activePage === "/sale" ? "active" : ""}
+          onClick={(e) => {
+            e.preventDefault()
+            navigateToSection("/sale")
+          }}
+        >
+          Sale
+        </a>
+
+        <a
+          href="/about"
+          className={activePage === "/about" ? "active" : ""}
+          onClick={(e) => {
+            e.preventDefault()
+            navigateToSection("/about")
+          }}
+        >
+          About Us
+        </a>
+      </div>
+
+      {/* Search overlay */}
+      <div className={`search-overlay ${searchOpen ? "active" : ""}`}>
+        <div className="search-container">
+          <form onSubmit={handleSearchSubmit}>
+            <SearchIcon size={20} className="search-icon" />
+            <input
+              ref={searchInputRef}
+              type="text"
+              placeholder="Search for products..."
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button type="submit" className="search-btn">
+              <SearchIcon size={20} />
+            </button>
+            <button type="button" className="search-close" onClick={toggleSearch}>
+              <X size={20} />
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Action buttons */}
+      <div className="navActions">
+        <button className="navAction" onClick={toggleSearch} aria-label="Search">
+          <SearchIcon size={20} />
+        </button>
+        <button className="navAction favorites-btn" onClick={onFavoritesClick} aria-label="Favorites">
+          <Heart size={20} />
+          {favoritesCount > 0 && <span className="favorites-count">{favoritesCount}</span>}
+        </button>
+        <button className="menuToggle" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+    </nav>
   )
 }
 

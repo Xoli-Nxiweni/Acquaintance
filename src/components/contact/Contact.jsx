@@ -105,6 +105,7 @@ const Contact = ({ onClose }) => {
               <label htmlFor="name">Your Name</label>
               <input 
                 type="text" 
+                placeholder='Enter Your Name e.g Stephan Ortega'
                 id="name" 
                 name="name" 
                 value={formData.name}
@@ -118,6 +119,7 @@ const Contact = ({ onClose }) => {
               <label htmlFor="email">Email Address</label>
               <input 
                 type="email" 
+                placeholder='Enter Your Email e.g abc@me.com'
                 id="email" 
                 name="email" 
                 value={formData.email}
@@ -131,6 +133,7 @@ const Contact = ({ onClose }) => {
               <label htmlFor="subject">Subject</label>
               <input 
                 type="text" 
+                placeholder='Enter Your Subject e.g Order Inquiry'
                 id="subject" 
                 name="subject" 
                 value={formData.subject}
@@ -144,8 +147,9 @@ const Contact = ({ onClose }) => {
               <label htmlFor="message">Your Message</label>
               <textarea 
                 id="message" 
+                placeholder='Enter Your Name e.g Stephan Ortega'
                 name="message" 
-                rows="5"
+                rows="3"
                 value={formData.message}
                 onChange={handleChange}
                 className={formErrors.message ? 'error' : ''}
@@ -216,19 +220,19 @@ const Contact = ({ onClose }) => {
             </div>
           </div>
           
+        </div>
+      </div>
           <div className="map-container">
             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.0508083384394!2d27.8651!3d-26.2345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7e7d7c4a4a7%3A0x4c7944a5f11245c8!2sMeadowlands%20East%20Zone%204%2C%20Soweto%2C%201852%2C%20South%20Africa!5e0!3m2!1sen!2sus!4v1625764422047!5m2!1sen!2sus" 
               width="100%" 
-              height="100%" 
+              height="400px" 
               style={{ border: 0 }} 
               allowFullScreen="" 
               loading="lazy"
               title="Acquaintance Apparel Location"
             ></iframe>
           </div>
-        </div>
-      </div>
     </div>
   )
 }

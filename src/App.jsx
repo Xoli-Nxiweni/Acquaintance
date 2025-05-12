@@ -11,6 +11,7 @@ import Footer from "./components/footer/Footer"
 import Favorites from "./components/favorites/Favorites"
 import Search from "./components/search/Search"
 import Contact from "./components/contact/Contact"
+import Categories from "./components/categories/Categories"
 import "./App.css"
 import "./globalStyles.css"
 
@@ -20,6 +21,41 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("")
   const [showSearch, setShowSearch] = useState(false)
   const [showContact, setShowContact] = useState(false)
+  const [showCategories, setShowCategories] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null)
+
+  // Categories data structure
+  const categoriesData = [
+    {
+      name: "T-Shirts",
+      subcategories: ["Graphic Tees", "Basic Tees", "Long Sleeve", "Polo Shirts"],
+    },
+    {
+      name: "Bottoms",
+      subcategories: ["Jeans", "Shorts", "Pants", "Skirts"],
+    },
+    {
+      name: "Outerwear",
+      subcategories: ["Jackets", "Coats", "Hoodies", "Sweaters"],
+    },
+    {
+      name: "Dresses",
+      subcategories: ["Casual", "Formal", "Maxi", "Mini"],
+    },
+    {
+      name: "Activewear",
+      subcategories: ["Tops", "Bottoms", "Sets", "Jackets"],
+    },
+    {
+      name: "Accessories",
+      subcategories: ["Bags", "Jewelry", "Hats", "Scarves"],
+    },
+    {
+      name: "Footwear",
+      subcategories: ["Sneakers", "Boots", "Sandals", "Formal"],
+    },
+  ]
 
   // Load favorites from localStorage on initial render
   useEffect(() => {
@@ -49,6 +85,7 @@ export default function App() {
     setShowFavorites(!showFavorites)
     setShowSearch(false)
     setShowContact(false)
+    setShowCategories(false)
   }
 
   const handleSearch = (term) => {
@@ -56,12 +93,14 @@ export default function App() {
     setShowSearch(true)
     setShowFavorites(false)
     setShowContact(false)
+    setShowCategories(false)
   }
 
   const handleRenderContact = () => {
     setShowContact(true)
     setShowFavorites(false)
     setShowSearch(false)
+    setShowCategories(false)
 
     // Scroll to top when contact is opened
     window.scrollTo({
@@ -74,9 +113,41 @@ export default function App() {
     setShowContact(false)
   }
 
+  const handleCategorySelect = (categorySlug, subcategorySlug = null) => {
+    // Only show the categories page if a specific category is selected
+    if (categorySlug && categorySlug !== "all") {
+      setSelectedCategory(categorySlug)
+      setSelectedSubcategory(subcategorySlug)
+      setShowCategories(true)
+      setShowFavorites(false)
+      setShowSearch(false)
+      setShowContact(false)
+
+      // Scroll to top when categories is opened
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      })
+    }
+  }
+
+  const handleSubcategorySelect = (subcategorySlug) => {
+    setSelectedSubcategory(subcategorySlug)
+  }
+
+  const handleCloseCategories = () => {
+    setShowCategories(false)
+  }
+
   return (
     <div id="top" className="app">
-      <Navbar onFavoritesClick={toggleFavoritesView} favoritesCount={favorites.length} onSearch={handleSearch} />
+      <Navbar
+        onFavoritesClick={toggleFavoritesView}
+        favoritesCount={favorites.length}
+        onSearch={handleSearch}
+        onCategorySelect={handleCategorySelect}
+        categoriesData={categoriesData}
+      />
 
       {showFavorites ? (
         <section id="favorites" className="content-section">
@@ -90,6 +161,17 @@ export default function App() {
         <section id="contact" className="content-section">
           <Contact onClose={handleCloseContact} />
         </section>
+      ) : showCategories ? (
+        <section id="categories" className="content-section">
+          <Categories
+            selectedCategory={selectedCategory}
+            selectedSubcategory={selectedSubcategory}
+            categoriesData={categoriesData}
+            onCategorySelect={handleCategorySelect}
+            onSubcategorySelect={handleSubcategorySelect}
+            onClose={handleCloseCategories}
+          />
+        </section>
       ) : (
         <>
           <section id="home" className="content-section">
@@ -100,13 +182,13 @@ export default function App() {
             <ShopAll onToggleFavorite={toggleFavorite} favorites={favorites} />
           </section>
 
-          <section id="new-arrivals" className="content-section">
+          {/* <section id="new-arrivals" className="content-section">
             <NewArrivals onToggleFavorite={toggleFavorite} favorites={favorites} />
-          </section>
-
+          </section> */}
+{/* 
           <section id="sale" className="content-section">
             <Sale onToggleFavorite={toggleFavorite} favorites={favorites} />
-          </section>
+          </section> */}
 
           <section id="about" className="content-section">
             <AboutUs />
