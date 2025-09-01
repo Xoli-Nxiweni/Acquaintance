@@ -182,14 +182,6 @@ export default function App() {
             <ShopAll onToggleFavorite={toggleFavorite} favorites={favorites} />
           </section>
 
-          {/* <section id="new-arrivals" className="content-section">
-            <NewArrivals onToggleFavorite={toggleFavorite} favorites={favorites} />
-          </section> */}
-{/* 
-          <section id="sale" className="content-section">
-            <Sale onToggleFavorite={toggleFavorite} favorites={favorites} />
-          </section> */}
-
           <section id="about" className="content-section">
             <AboutUs />
           </section>
